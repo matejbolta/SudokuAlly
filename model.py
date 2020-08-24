@@ -66,4 +66,27 @@ def ustrezen(tabela, kandidat, polje):
     
     # Če pridemo do konca je kandidat ustrezen
     return True
-    
+
+def resi(tabela):
+    '''Z rekurzivnim klicem ("backtracking" algoritmom) reši tabelo in vrne True/False'''
+    polje = najdi_prazno_polje(tabela)
+    if polje is None:  # Našli smo rešitev
+        return True
+    else:
+        vrstica, stolpec = polje
+
+    for i in range(1, 10): # i je kandidat
+        if ustrezen(tabela, i, polje):
+            # Kandidat ustreza trenutni tabeli, ne pa še nujno končni reštvi
+            tabela[vrstica][stolpec] = i
+
+            # Poskusimo rešiti novo tabelo (rekurzivni klic)
+            if resi(tabela):
+                return True
+
+            # Če ne pridemo do konca, je številka neustrezna, ponastavimo
+            # polje poskusimo z naslednjim kandidatom.
+            tabela[vrstica][stolpec] = 0
+
+    return False # Nismo našli rešitve (tabela je nerešljiva)
+
