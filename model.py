@@ -46,43 +46,10 @@ tabela_3 = [
     [0, 8, 0, 0, 0, 0, 0, 9, 0],
 ]
 
-# POTREBNE FUNKCIJE OZ METODE
-# Za iskanje prvega praznega polja v tabeli:
-#   najdi_prazno_polje(tabela)
-# Da v določenem polju preverimo ustreznost kandidata:
-#   ustrezen(tabela, kandidat, polje)
-# Glavna funkcija, ki reši mrežo:
-#   resi(tabela)
-
-def prikazi_tabelo(tabela):
-    '''Prikaže tabelo v obliki, ki je berljiva za ljudi.'''
-    for i in range(len(tabela)): # Vrstice
-        if i % 3 == 0 and i != 0: # not i % 3 and bool(i)
-            print('- - - - - - - - - - -')
-
-        for j in range(len(tabela[0])): # Po eni vrstici
-            if j % 3 == 0 and j != 0: # not j % 3 and bool(j)
-                print('| ', end='')
-
-            if j != 8:
-                print(str(tabela[i][j]) + ' ', end='')
-            else: # j == 8
-                print(tabela[i][j])
-
 # Navajeni smo, da koordinate vedno podajamo v obliki (x, y). Vendar pa se pri reševanju
 # sudokuja uporablja standardna notacija, ki je oblike R1C1, kjer je R row (vrstica), C
 # column (stolpec), pripadajoči številki pa zaporedna vrstica oz. stolpec. Ta notacija je
 # seveda oblike (y, x). Primer: R3C6 pomeni polje v tretji vrstici in v šestem stolpcu.
-
-def najdi_prazno_polje(tabela):
-    '''V podani tabeli poišče prazno polje,in
-       vrne njegove koordinate v obliki (y, x).
-       Če praznih polj ni, vrne None'''
-    for i in range(len(tabela)):
-        for j in range(len(tabela[0])):
-            if tabela[i][j] == 0:
-                return (i, j)  # (vrstica, stolpec)
-    return None
 
 def ustrezen(tabela, kandidat, polje):
     '''Podamo tabelo, številko ki je preverjamo in koordinate.
@@ -145,9 +112,6 @@ def resi(tabela):
 
 
 
-
-
-
 class Mreza:
     def __init__(self, tabela, resena_tabela=None):
         self.tabela = tabela
@@ -159,7 +123,7 @@ class Mreza:
     
     def __str__(self):
         '''Prikaže mrežo v obliki, ki je berljiva za ljudi.'''
-        izpis = ''
+        izpis = '\n'
         for i in range(len(self.tabela)): # Vrstice
             if i % 3 == 0 and i != 0: # not i % 3 and bool(i)
                 izpis += '- - - - - - - - - - -\n'
