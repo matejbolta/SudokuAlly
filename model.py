@@ -120,3 +120,24 @@ print("\n+-+-+-+-+-+-+-+-+-+-+")
 print('')
 prikazi_tabelo(TABELA)
 print('')
+
+
+
+
+
+
+class Mreza:
+    def __init__(self, tabela):
+        self.tabela = tabela
+    
+    def najdi_prazno_polje(self):
+        pass
+
+    def ustrezen(self, kandidat, polje):
+        pass
+
+    def resi(self):
+        pass
+
+    def ugani_stevilko(self):
+        pass
