@@ -11,8 +11,19 @@
 # Konstante
 '''...'''
 
-# Primer sudoku mreže
+# Trije primeri sudoku mreže (tabele)
 tabela_1 = [
+    [7, 8, 0, 4, 0, 0, 1, 2, 0],
+    [6, 0, 0, 0, 7, 5, 0, 0, 9],
+    [0, 0, 0, 6, 0, 1, 0, 7, 8],
+    [0, 0, 7, 0, 4, 0, 2, 6, 0],
+    [0, 0, 1, 0, 5, 0, 9, 3, 0],
+    [9, 0, 4, 0, 6, 0, 0, 0, 5],
+    [0, 7, 0, 3, 0, 0, 0, 1, 2],
+    [1, 2, 0, 0, 0, 7, 4, 0, 0],
+    [0, 4, 9, 2, 0, 6, 0, 0, 7],
+]
+tabela_2 = [
     [0, 0, 0, 0, 0, 0, 7, 0, 0],
     [0, 0, 8, 6, 5, 9, 0, 0, 1],
     [0, 1, 0, 0, 0, 0, 0, 2, 0],
@@ -22,6 +33,17 @@ tabela_1 = [
     [0, 5, 0, 0, 0, 0, 0, 6, 0],
     [6, 0, 0, 4, 1, 7, 3, 0, 0],
     [0, 0, 1, 0, 0, 0, 0, 0, 0],
+]
+tabela_3 = [
+    [0, 1, 0, 0, 0, 0, 0, 2, 0],
+    [3, 0, 0, 0, 0, 0, 0, 0, 7],
+    [0, 0, 4, 5, 0, 2, 1, 0, 0],
+    [0, 0, 6, 4, 0, 5, 2, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 3, 0, 6, 5, 0, 0],
+    [0, 0, 5, 6, 0, 4, 3, 0, 0],
+    [6, 0, 0, 0, 0, 0, 0, 0, 2],
+    [0, 8, 0, 0, 0, 0, 0, 9, 0],
 ]
 
 # POTREBNE FUNKCIJE OZ METODE
@@ -112,14 +134,14 @@ def resi(tabela):
 
 
 # Prikaz tabele v začetnem in nato še rešenem stanju
-TABELA = tabela_1
-print('')
-prikazi_tabelo(TABELA)
-resi(TABELA)
-print("\n+-+-+-+-+-+-+-+-+-+-+")
-print('')
-prikazi_tabelo(TABELA)
-print('')
+# TABELA = tabela_1
+# print('')
+# prikazi_tabelo(TABELA)
+# resi(TABELA)
+# print("\n+-+-+-+-+-+-+-+-+-+-+")
+# print('')
+# prikazi_tabelo(TABELA)
+# print('')
 
 
 
@@ -127,11 +149,40 @@ print('')
 
 
 class Mreza:
-    def __init__(self, tabela):
+    def __init__(self, tabela, resena_tabela=None):
         self.tabela = tabela
+        self.resena_tabela = resena_tabela
+
+    def __repr__(self):
+        '''Prikaže mrežo v obliki gnezdenega seznama.'''
+        return f'{self.tabela}'
     
+    def __str__(self):
+        '''Prikaže mrežo v obliki, ki je berljiva za ljudi.'''
+        izpis = ''
+        for i in range(len(self.tabela)): # Vrstice
+            if i % 3 == 0 and i != 0: # not i % 3 and bool(i)
+                izpis += '- - - - - - - - - - -\n'
+
+            for j in range(len(self.tabela[0])): # Po eni vrstici
+                if j % 3 == 0 and j != 0: # not j % 3 and bool(j)
+                    izpis += '| '
+
+                if j != 8:
+                    izpis += str(self.tabela[i][j]) + ' '
+                else: # j == 8
+                    izpis += str(self.tabela[i][j]) + '\n'
+        return izpis
+
     def najdi_prazno_polje(self):
-        pass
+        '''V mreži poišče prazno polje, in
+           vrne njegove koordinate v obliki (y, x).
+           Če praznih polj ni, vrne None'''
+        for i in range(len(self.tabela)):
+            for j in range(len(self.tabela[0])):
+                if self.tabela[i][j] == 0:
+                    return (i, j)  # (vrstica, stolpec)
+        return None
 
     def ustrezen(self, kandidat, polje):
         pass
@@ -139,5 +190,11 @@ class Mreza:
     def resi(self):
         pass
 
-    def ugani_stevilko(self):
+    def resi_nakljucno_stevilko(self):
         pass
+
+    def resi_doloceno_polje(self):
+        pass
+
+
+testna = Mreza(tabela_2)
