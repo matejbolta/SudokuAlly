@@ -26,11 +26,31 @@ tabela_1 = [
 
 # POTREBNE FUNKCIJE OZ METODE
 # Za iskanje prvega praznega polja v tabeli:
-# najdi_prazno_polje(tabela)
+#   najdi_prazno_polje(tabela)
 # Da v določenem polju preverimo ustreznost kandidata:
-# ustrezen(tabela, kandidat, polje)
-# Glavna funkcija, ki reši mrežo
-# resi(tabela)
+#   ustrezen(tabela, kandidat, polje)
+# Glavna funkcija, ki reši mrežo:
+#   resi(tabela)
+
+def prikazi_tabelo(tabela):
+    '''Prikaže tabelo v obliki, ki je berljiva za ljudi.'''
+    for i in range(len(tabela)): # Vrstice
+        if i % 3 == 0 and i != 0: # not i % 3 and bool(i)
+            print('- - - - - - - - - - -')
+
+        for j in range(len(tabela[0])): # Po eni vrstici
+            if j % 3 == 0 and j != 0: # not j % 3 and bool(j)
+                print('| ', end='')
+
+            if j != 8:
+                print(str(tabela[i][j]) + ' ', end='')
+            else: # j == 8
+                print(tabela[i][j])
+
+# Navajeni smo, da koordinate vedno podajamo v obliki (x, y). Vendar pa se pri reševanju
+# sudokuja uporablja standardna notacija, ki je oblike R1C1, kjer je R row (vrstica), C
+# column (stolpec), pripadajoči številki pa zaporedna vrstica oz. stolpec. Ta notacija je
+# seveda oblike (y, x). Primer: R3C6 pomeni polje v tretji vrstici in v šestem stolpcu.
 
 def najdi_prazno_polje(tabela):
     '''V podani tabeli poišče prazno polje,in
@@ -90,3 +110,13 @@ def resi(tabela):
 
     return False # Nismo našli rešitve (tabela je nerešljiva)
 
+
+# Prikaz tabele v začetnem in nato še rešenem stanju
+TABELA = tabela_1
+print('')
+prikazi_tabelo(TABELA)
+resi(TABELA)
+print("\n+-+-+-+-+-+-+-+-+-+-+")
+print('')
+prikazi_tabelo(TABELA)
+print('')
