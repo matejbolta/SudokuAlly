@@ -47,11 +47,12 @@ tabela_3 = [
     [0, 8, 0, 0, 0, 0, 0, 9, 0],
 ]
 
-# Navajeni smo, da koordinate vedno podajamo v obliki (x, y). Vendar pa se pri reševanju
-# sudokuja uporablja standardna notacija, ki je oblike R1C1, kjer je R row (vrstica), C
-# column (stolpec), pripadajoči številki pa zaporedna vrstica oz. stolpec. Ta notacija je
-# seveda oblike (y, x). Primer: R3C6 pomeni polje v tretji vrstici in v šestem stolpcu.
-# Naše oznake pa bodo med (0, 0) in (8, 8).
+# Navajeni smo, da koordinate vedno podajamo v obliki (x, y). Vendar pa
+# se pri reševanju sudokuja uporablja standardna notacija, ki je oblike
+# R1C1, kjer je R row (vrstica), C column (stolpec), pripadajoči
+# številki pa zaporedna vrstica oz. stolpec. Ta notacija je seveda
+# oblike (y, x). Primer: R3C6 pomeni polje v tretji vrstici in v šestem
+# stolpcu. Naše oznake pa bodo med (0, 0) in (8, 8).
 
 class Mreza:
     def __init__(self, tabela):
