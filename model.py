@@ -55,6 +55,8 @@ tabela_3 = [
 # stolpcu. Naše oznake pa bodo med (0, 0) in (8, 8).
 
 class Mreza:
+    '''Predstavlja eno sudoku mrežo. Vsebuje začetno, trenutno in
+    rešeno tabelo'''
     def __init__(self, tabela):
         self.tabela = tabela
         self.zacetna_tabela = [[stevilo for stevilo in vrstica] for vrstica in tabela]
@@ -182,6 +184,10 @@ class Mreza:
             return True
         return False
 
+class SudokuAlly:
+    '''Skrbi za trenutno stanje VEČ "iger"
+    (imel bo več objektov tipa Mreza)'''
+    pass
 
 
 testna = Mreza(tabela_2)
