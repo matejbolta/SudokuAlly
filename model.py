@@ -142,7 +142,7 @@ class Mreza:
         # Če pridemo do konca je kandidat ustrezen
         return True
 
-    def resi(self, tabela):
+    def resi(self, tabela): # Srce programa
         '''Z rekurzivnim klicem ("backtracking" algoritmom) reši tabelo
         in vrne True/False. tabela = (self.tabela / self.zacetna_tabela)'''
         polje = self.najdi_prazno_polje(tabela)
@@ -185,10 +185,9 @@ class Mreza:
         return False
 
 class SudokuAlly:
-    '''Skrbi za trenutno stanje VEČ "iger"
+    '''Skrbi za trenutno stanje VEČ mrež
     (imel bo več objektov tipa Mreza)'''
     pass
-
 
 testna = Mreza(tabela_2)
 testna.resi(testna.resena_tabela)
