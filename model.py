@@ -12,7 +12,7 @@ import random
 # Konstante
 '''...'''
 
-# Trije primeri sudoku mreže (tabele)
+# Primeri sudoku mreže (tabele)
 tabela_1 = [
     [7, 8, 0, 4, 0, 0, 1, 2, 0],
     [6, 0, 0, 0, 7, 5, 0, 0, 9],
@@ -35,7 +35,7 @@ tabela_2 = [
     [6, 0, 0, 4, 1, 7, 3, 0, 0],
     [0, 0, 1, 0, 0, 0, 0, 0, 0],
 ]
-tabela_3 = [
+tabela_ctcapp = [
     [0, 1, 0, 0, 0, 0, 0, 2, 0],
     [3, 0, 0, 0, 0, 0, 0, 0, 7],
     [0, 0, 4, 5, 0, 2, 1, 0, 0],
@@ -46,7 +46,17 @@ tabela_3 = [
     [6, 0, 0, 0, 0, 0, 0, 0, 2],
     [0, 8, 0, 0, 0, 0, 0, 9, 0],
 ]
-
+tabela_ctcyt = [
+    [5, 0, 0, 2, 0, 0, 0, 4, 0],
+    [0, 0, 0, 6, 0, 3, 0, 0, 0],
+    [0, 3, 0, 0, 0, 9, 0, 0, 7],
+    [0, 0, 3, 0, 0, 7, 0, 0, 0],
+    [0, 0, 7, 0, 0, 8, 0, 0, 0],
+    [6, 0, 0, 0, 0, 0, 0, 2, 0],
+    [0, 8, 0, 0, 0, 0, 0, 0, 3],
+    [0, 0, 0, 4, 0, 0, 6, 0, 0],
+    [0, 0, 0, 1, 0, 0, 5, 0, 0]
+]
 # Navajeni smo, da koordinate vedno podajamo v obliki (x, y). Vendar pa
 # se pri reševanju sudokuja uporablja standardna notacija, ki je oblike
 # R1C1, kjer je R row (vrstica), C column (stolpec), pripadajoči
@@ -142,7 +152,7 @@ class Mreza:
         # Če pridemo do konca je kandidat ustrezen
         return True
 
-    def resi(self, tabela): # Srce programa
+    def resi(self, tabela):
         '''Z rekurzivnim klicem ("backtracking" algoritmom) reši tabelo
         in vrne True/False. tabela = (self.tabela / self.zacetna_tabela)'''
         polje = self.najdi_prazno_polje(tabela)
