@@ -60,8 +60,8 @@ class Mreza:
     def __init__(self, tabela):
         self.tabela = tabela
         self.zacetna_tabela = [[stevilo for stevilo in vrstica] for vrstica in tabela]
-        # Ko naredimo objekt, kličemo še x.resi(x.resena_tabela)
         self.resena_tabela = [[stevilo for stevilo in vrstica] for vrstica in tabela]
+        self.resi(self.resena_tabela)
 
     def __repr__(self):
         '''Prikaže mrežo v obliki gnezdenega seznama.'''
@@ -184,13 +184,22 @@ class Mreza:
             return True
         return False
 
+    def vnesi_stevilko(self, stevilka, polje):
+        '''V tabelo vnese stevilko na podano polje in vrne T/F'''
+        y, x = polje
+        if self.resena_tabela[y][x] != stevilka:
+            return False
+        else:
+            self.tabela[y][x] = stevilka
+            return True
+
+
 class SudokuAlly:
-    '''Skrbi za trenutno stanje VEČ mrež
-    (imel bo več objektov tipa Mreza)'''
+    '''Skrbi za trenutno stanje VEČ mrež (imel bo več objektov tipa
+    Mreza)'''
     pass
 
 testna = Mreza(tabela_2)
-testna.resi(testna.resena_tabela)
 # print(testna.tabela)
 # print(testna.resena_tabela)
 # print(testna.zacetna_tabela)
