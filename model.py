@@ -7,10 +7,26 @@
 #                                               __/ |
 #                                              |___/ 
 
-import random
+import random, json
 
 # Konstante
-'''...'''
+LOGOTIP = r'''
+ _____           _       _           ___  _ _       
+/  ___|         | |     | |         / _ \| | |      
+\ `--. _   _  __| | ___ | | ___   _/ /_\ \ | |_   _ 
+ `--. \ | | |/ _` |/ _ \| |/ / | | |  _  | | | | | |
+/\__/ / |_| | (_| | (_) |   <| |_| | | | | | | |_| |
+\____/ \__,_|\__,_|\___/|_|\_\\__,_\_| |_/_|_|\__, |
+                                               __/ |
+                                              |___/ 
+'''
+DATOTEKA_S_STANJEM = 'stanje.json'
+RESEN_SUDOKU = 'end'
+NAPACEN_UGIB = '-'
+ZAPOLNJENO_POLJE = 'o'
+PRAVILEN_UGIB = '+'
+ZACETEK = 'start'
+USPESNA_POMOC = 'success'
 
 # Primeri sudoku mreže (tabele)
 tabela_1 = [
@@ -67,9 +83,12 @@ tabela_ctcyt = [
 class Mreza:
     '''Predstavlja eno sudoku mrežo. Vsebuje začetno, trenutno in
     rešeno tabelo'''
-    def __init__(self, tabela):
-        self.tabela = tabela
-        self.zacetna_tabela = [[stevilo for stevilo in vrstica] for vrstica in tabela]
+    def __init__(self, zacetna_tabela, tabela=None):
+        self.zacetna_tabela = zacetna_tabela
+        if tabela:
+            self.tabela = tabela
+        else:
+            self.tabela = [[stevilo for stevilo in vrstica] for vrstica in zacetna_tabela]
         self.resena_tabela = [[stevilo for stevilo in vrstica] for vrstica in tabela]
         self.resi(self.resena_tabela)
 
@@ -183,31 +202,91 @@ class Mreza:
             while self.tabela[y][x]:
                 y, x = random.choice(range(9)), random.choice(range(9))
             self.tabela[y][x] = self.resena_tabela[y][x]
-            return True
-        return False
+            return USPESNA_POMOC
+        return RESEN_SUDOKU
 
     def resi_doloceno_polje(self, polje):
         '''Z ustrezno številko zapolni podano polje v tabeli'''
         y, x = polje
         if not self.tabela[y][x]:
             self.tabela[y][x] = self.resena_tabela[y][x]
-            return True
-        return False
+            return USPESNA_POMOC
+        return ZAPOLNJENO_POLJE
 
     def vnesi_stevilko(self, stevilka, polje):
-        '''V tabelo vnese stevilko na podano polje in vrne T/F'''
+        '''Vrne RESEN_SUDOKU, NAPACEN_UGIB, ZAPOLNJENO_POLJE, PRAVILEN_UGIB'''
         y, x = polje
-        if self.resena_tabela[y][x] != stevilka:
-            return False
+        if self.tabela[y][x]:
+            return ZAPOLNJENO_POLJE
+        elif self.resena_tabela[y][x] != stevilka:
+            return NAPACEN_UGIB
         else:
             self.tabela[y][x] = stevilka
-            return True
+            if self.tabela == self.resena_tabela:
+                return RESEN_SUDOKU
+            else:
+                return PRAVILEN_UGIB
 
+    def polja_zacetne_tabele(self):
+        polja = []
+        for y in self.zacetna_tabela:
+            for x in self.zacetna_tabela[y]:
+                if self.zacetna_tabela[y][x]:
+                    polja.append((y, x))
+        return polja
 
 class SudokuAlly:
-    '''Skrbi za trenutno stanje VEČ mrež (imel bo več objektov tipa
-    Mreza)'''
-    pass
+    '''Skrbi za trenutno stanje VEČ mrež (imel bo več objektov tipa Mreza)'''
+
+    def __init__(self, datoteka_s_stanjem=DATOTEKA_S_STANJEM):
+        # Slovar, ki imenu priredi njegovo mrežo
+        self.mreze = {}    # self.mreze[ime] = (Mreza, stanje)
+        self.datoteka_s_stanjem = datoteka_s_stanjem
+
+    def nova_mreza(self, ime, tabela):
+        '''Naredi novo mrežo. Vrne ime mreže.'''
+        self.nalozi_mreze_iz_datoteke()
+        self.mreze[ime] = (Mreza(tabela), ZACETEK) # Naredi novo mrežo
+        self.zapisi_mreze_v_datoteko()
+        return ime
+
+    def resi_polje(self, ime, polje=None):
+        self.nalozi_mreze_iz_datoteke()
+        trenutna_mreza, _ = self.mreze[ime]
+
+        if polje:
+            stanje = trenutna_mreza.resi_doloceno_polje(polje)
+        else:
+            stanje = trenutna_mreza.resi_nakljucno_polje()
+
+        self.mreze[ime] = (trenutna_mreza, stanje)
+
+    def vnesi_stevilko(self, ime, stevilka, polje):
+        self.nalozi_mreze_iz_datoteke()
+        trenutna_mreza, _ = self.mreze[ime]
+        stanje = trenutna_mreza.vnesi_stevilko(stevilka, polje)
+        self.mreze[ime] = (trenutna_mreza, stanje)
+        self.zapisi_mreze_v_datoteko()
+
+    def zapisi_mreze_v_datoteko(self):
+        # { ime : ( zacetna_tabela, tabela, stanje ) }
+
+        mreze1 = {
+            ime : (mreza.zacetna_tabela, mreza.tabela, stanje)
+            for ime, (mreza, stanje) in self.mreze.items()
+        }
+
+        with open(self.datoteka_s_stanjem, 'w', encoding='utf-8') as out_file:
+            json.dump(mreze1, out_file)
+
+    def nalozi_mreze_iz_datoteke(self):
+        with open(self.datoteka_s_stanjem, 'r', encoding='utf-8') as in_file:
+            mreze_iz_diska = json.load(in_file)
+
+        self.mreze = {
+            ime: (Mreza(zacetna_tabela, tabela), stanje)
+            for ime, (zacetna_tabela, tabela, stanje) in mreze_iz_diska.items()
+        }
 
 testna = Mreza(tabela_2)
 # print(testna.tabela)
