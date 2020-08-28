@@ -84,14 +84,17 @@ tabela_ctcyt = [
 class Mreza:
     '''Predstavlja eno sudoku mrežo. Vsebuje začetno, trenutno in
     rešeno tabelo'''
-    def __init__(self, zacetna_tabela, tabela=None):
+    def __init__(self, zacetna_tabela, tabela=None, resena_tabela=None):
         self.zacetna_tabela = zacetna_tabela
         if tabela:
             self.tabela = tabela
         else:
             self.tabela = [[stevilo for stevilo in vrstica] for vrstica in zacetna_tabela]
-        self.resena_tabela = [[stevilo for stevilo in vrstica] for vrstica in zacetna_tabela]
-        self.resi(self.resena_tabela)
+        if resena_tabela:
+            self.resena_tabela = resena_tabela
+        else:
+            self.resena_tabela = [[stevilo for stevilo in vrstica] for vrstica in zacetna_tabela]
+            self.resi(self.resena_tabela)
 
     def __repr__(self):
         '''Prikaže mrežo v obliki gnezdenega seznama.'''
@@ -270,10 +273,10 @@ class SudokuAlly:
         self.zapisi_mreze_v_datoteko()
 
     def zapisi_mreze_v_datoteko(self):
-        # { ime : ( zacetna_tabela, tabela, stanje ) }
+        # { ime : ( zacetna_tabela, tabela, resena_tabela, stanje ) }
 
         mreze1 = {
-            ime : (mreza.zacetna_tabela, mreza.tabela, stanje)
+            ime : (mreza.zacetna_tabela, mreza.tabela, mreza.resena_tabela, stanje)
             for ime, (mreza, stanje) in self.mreze.items()
         }
 
@@ -285,8 +288,8 @@ class SudokuAlly:
             mreze_iz_diska = json.load(in_file)
 
         self.mreze = {
-            ime: (Mreza(zacetna_tabela, tabela), stanje)
-            for ime, (zacetna_tabela, tabela, stanje) in mreze_iz_diska.items()
+            ime: (Mreza(zacetna_tabela, tabela, resena_tabela), stanje)
+            for ime, (zacetna_tabela, tabela, resena_tabela, stanje) in mreze_iz_diska.items()
         }
 
 #testna = Mreza(tabela_2)
