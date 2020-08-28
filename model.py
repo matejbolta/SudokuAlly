@@ -28,7 +28,7 @@ PRAVILEN_UGIB = '+'
 ZACETEK = 'start'
 USPESNA_POMOC = 'success'
 
-# Primeri sudoku mreže (tabele)
+# Primeri sudoku mrež (tabel)
 tabela_1 = [
     [7, 8, 0, 4, 0, 0, 1, 2, 0],
     [6, 0, 0, 0, 7, 5, 0, 0, 9],
@@ -73,6 +73,7 @@ tabela_ctcyt = [
     [0, 0, 0, 4, 0, 0, 6, 0, 0],
     [0, 0, 0, 1, 0, 0, 5, 0, 0]
 ]
+
 # Navajeni smo, da koordinate vedno podajamo v obliki (x, y). Vendar pa
 # se pri reševanju sudokuja uporablja standardna notacija, ki je oblike
 # R1C1, kjer je R row (vrstica), C column (stolpec), pripadajoči
@@ -89,7 +90,7 @@ class Mreza:
             self.tabela = tabela
         else:
             self.tabela = [[stevilo for stevilo in vrstica] for vrstica in zacetna_tabela]
-        self.resena_tabela = [[stevilo for stevilo in vrstica] for vrstica in tabela]
+        self.resena_tabela = [[stevilo for stevilo in vrstica] for vrstica in zacetna_tabela]
         self.resi(self.resena_tabela)
 
     def __repr__(self):
@@ -288,7 +289,7 @@ class SudokuAlly:
             for ime, (zacetna_tabela, tabela, stanje) in mreze_iz_diska.items()
         }
 
-testna = Mreza(tabela_2)
+#testna = Mreza(tabela_2)
 # print(testna.tabela)
 # print(testna.resena_tabela)
 # print(testna.zacetna_tabela)
