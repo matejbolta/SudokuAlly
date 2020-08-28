@@ -27,6 +27,10 @@ ZAPOLNJENO_POLJE = 'o'
 PRAVILEN_UGIB = '+'
 ZACETEK = 'start'
 USPESNA_POMOC = 'success'
+SLOVAR_VRSTIC = {
+    (trovrstje, vrsta) :
+    (3 * trovrstje + vrsta) for trovrstje in range(3) for vrsta in range (3)
+    }
 
 # Primeri sudoku mrež (tabel)
 tabela_1 = [
@@ -292,7 +296,12 @@ class SudokuAlly:
             for ime, (zacetna_tabela, tabela, resena_tabela, stanje) in mreze_iz_diska.items()
         }
 
-#testna = Mreza(tabela_2)
-# print(testna.tabela)
-# print(testna.resena_tabela)
-# print(testna.zacetna_tabela)
+
+# Pomoč pri razvijanju - ustvaritev objekta
+# sudokually = SudokuAlly()
+# sudokually.nalozi_mreze_iz_datoteke()
+# print('check0')
+# ime_nove_mreze1 = sudokually.nova_mreza('dvojkica', tabela_2)
+# print('check1')
+# ime_nove_mreze0 = sudokually.nova_mreza('enkica', tabela_1)
+# print('check2')
