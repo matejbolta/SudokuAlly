@@ -27,10 +27,18 @@ ZAPOLNJENO_POLJE = 'o'
 PRAVILEN_UGIB = '+'
 ZACETEK = 'start'
 USPESNA_POMOC = 'success'
-SLOVAR_VRSTIC = {
-    (trovrstje, vrsta) :
-    (3 * trovrstje + vrsta) for trovrstje in range(3) for vrsta in range (3)
-    }
+PRAZNA_TABELA = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+]
+
 
 # Primeri sudoku mrež (tabel)
 tabela_1 = [
