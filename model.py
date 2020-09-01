@@ -188,11 +188,11 @@ class Mreza:
         # Če pridemo do konca je kandidat ustrezen
         return True
 
-    def resi(self, tabela):
+    def resi(self, tabela, stikalo=True):
         '''Z rekurzivnim klicem ("backtracking" algoritmom) reši tabelo
         in vrne True/False. tabela = (self.tabela / self.zacetna_tabela)'''
-        if not self.ustreznost_tabele_osnovno(tabela):
-            return False
+        if stikalo and not self.ustreznost_tabele_osnovno(tabela):
+            return False # Preveri le v ničtem rekurzivnem klicu
         polje = self.najdi_prazno_polje(tabela)
         if polje is None:  # Našli smo rešitev
             return True
@@ -205,7 +205,7 @@ class Mreza:
                 tabela[vrstica][stolpec] = i
 
                 # Poskusimo rešiti novo tabelo (rekurzivni klic)
-                if self.resi(tabela):
+                if self.resi(tabela, False):
                     return True
 
                 # Če ne pridemo do konca, je številka neustrezna, ponastavimo
