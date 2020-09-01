@@ -15,7 +15,7 @@ COOKIE_SECRET = 'my very special - secret key and passphrase'
 
 # Če datoteka s stanjem še ne obstaja, jo naredimo.
 if not os.path.exists(model.DATOTEKA_S_STANJEM):
-    with open('stanje.json', 'w', encoding='utf-8') as empty:
+    with open(model.DATOTEKA_S_STANJEM, 'w', encoding='utf-8') as empty:
         json.dump({}, empty)
 
 # Naredimo nov objekt SudokuAlly in naložimo vanj stanje iz datoteke
@@ -38,7 +38,7 @@ def nova_mreza_get():
 @bottle.post('/nova_mreza/')
 def nova_mreza_post():
     tabela = [[stevilo for stevilo in vrstica] for vrstica in model.PRAZNA_TABELA]
-    ime = bottle.request.forms['ime'].upper()
+    ime = bottle.request.forms.getunicode('ime').upper()
     for vrsta in range(9):
         for stolpec in range(9):
             stevilka = bottle.request.forms[f'{vrsta}{stolpec}']
@@ -62,12 +62,62 @@ def prikaz_poskusa():
     return bottle.template('poskus_namig.tpl',
     ime=ime, mreza=mreza, stanje=stanje)
 
+@bottle.post('/poskus_namig/vnesi_stevilko/')
+def vnesi_stevilko():
+    ime = bottle.request.get_cookie(
+        IME_MREZE_COOKIE, secret=COOKIE_SECRET
+        )
+    vrsta = bottle.request.forms.getunicode('vrsta')
+    stolpec = bottle.request.forms.getunicode('stolpec')
+    stevilo = bottle.request.forms.getunicode('stevilo')
+    sudokually.vnesi_stevilko(ime, stevilo, (vrsta, stolpec))
+    bottle.redirect('/poskus_namig/')
 
+@bottle.post('/poskus_namig/resi_polje/')
+def resi_polje():
+    ime = bottle.request.get_cookie(
+        IME_MREZE_COOKIE, secret=COOKIE_SECRET
+        )
+    vrsta = bottle.request.forms.getunicode('vrsta')
+    stolpec = bottle.request.forms.getunicode('stolpec')
+    sudokually.resi_polje(ime, (vrsta, stolpec))
+    bottle.redirect('/poskus_namig/')
 
+@bottle.post('/poskus_namig/resi_nakljucno/')
+def resi_nakljucno():
+    ime = bottle.request.get_cookie(
+        IME_MREZE_COOKIE, secret=COOKIE_SECRET
+        )
+    sudokually.resi_polje(ime)
+    bottle.redirect('/poskus_namig/')
 
-# poskus_namig (tpl) pa bo sel z gumbom na poskus_namig (POST), 
-# ta pa redirect na poskus (GET)
+@bottle.post('/poskus_namig/resi_vse/')
+def resi_vse():
+    ime = bottle.request.get_cookie(
+        IME_MREZE_COOKIE, secret=COOKIE_SECRET
+        )
+    sudokually.resi_vse(ime)
+    bottle.redirect('/poskus_namig/')
 
+@bottle.post('/poskus_namig/izbris_mreze/')
+def izbrisi():
+    ime = bottle.request.get_cookie(
+        IME_MREZE_COOKIE, secret=COOKIE_SECRET
+        )
+    del sudokually.mreze[ime]
+    bottle.redirect('/SudokuAlly/')
+
+@bottle.get('/obstojece_mreze/')
+def obstojece_mreze_get():
+    return bottle.template('obstojece_mreze.tpl', sudokually=sudokually)
+
+@bottle.post('/obstojece_mreze/<ime>/')
+def obstojece_mreze_post(ime):
+    bottle.response.delete_cookie('IME_MREZE_COOKIE', path='/')
+    bottle.response.set_cookie(
+        IME_MREZE_COOKIE, ime, path='/', secret=COOKIE_SECRET
+        )
+    bottle.redirect('/poskus_namig/')
 
 # Slike
 @bottle.get('/img/<slika>')
