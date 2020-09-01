@@ -47,14 +47,13 @@ def nova_mreza_post():
             elif len(stevilka) != 1 or stevilka.isalpha():
                 bottle.redirect('/nova_mreza/')
             tabela[vrsta][stolpec] = int(stevilka)
-    ime = sudokually.nova_mreza(ime, tabela)
-    if ime == False:
-        bottle.redirect('/nova_mreza/')
-    else:
+    if sudokually.nova_mreza(ime, tabela):
         bottle.response.set_cookie(
             IME_MREZE_COOKIE, ime, path='/', secret=COOKIE_SECRET
             )
         bottle.redirect('/poskus_namig/')
+    else:
+        bottle.redirect('/nova_mreza/')
 
 @bottle.get('/poskus_namig/')
 def prikaz_poskusa():
@@ -107,7 +106,7 @@ def izbrisi():
     ime = bottle.request.get_cookie(
         IME_MREZE_COOKIE, secret=COOKIE_SECRET
         )
-    del sudokually.mreze[ime]
+    sudokually.izbrisi_mrezo(ime)
     bottle.redirect('/SudokuAlly/')
 
 @bottle.get('/obstojece_mreze/')
