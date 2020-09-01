@@ -21,24 +21,14 @@ LOGOTIP = r'''
                                               |___/ 
 '''
 DATOTEKA_S_STANJEM = 'stanje.json'
-RESEN_SUDOKU = 'end'
-NAPACEN_UGIB = '-'
-ZAPOLNJENO_POLJE = 'o'
-PRAVILEN_UGIB = '+'
-ZACETEK = 'start'
-USPESNA_POMOC = 'success'
-PRAZNA_TABELA = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0]
-]
-
+ZACETEK = 'zacetno_stanje'
+NAPACEN_UGIB = 'ugib_je_napacen'
+ZAPOLNJENO_POLJE = 'polje_je_zapolnjeno'
+PRAVILEN_UGIB = 'ugib_je_pravilen'
+NEVELJAVEN_VNOS = 'vnos_je_neveljaven'
+USPESNA_POMOC = 'pomoc_je_uspesna'
+RESEN_SUDOKU = 'sudoku_je_resen'
+PRAZNA_TABELA = [[0 for _ in range(9)] for _ in range(9)]
 
 # Primeri sudoku mrež (tabel)
 tabela_1 = [
@@ -224,14 +214,21 @@ class Mreza:
     def resi_doloceno_polje(self, polje):
         '''Z ustrezno številko zapolni podano polje v tabeli'''
         y, x = polje
+        if y.isalpha() or x.isalpha():
+            return NEVELJAVEN_VNOS
+        y, x = int(y) - 1, int(x) - 1
         if not self.tabela[y][x]:
             self.tabela[y][x] = self.resena_tabela[y][x]
             return USPESNA_POMOC
         return ZAPOLNJENO_POLJE
 
     def vnesi_stevilko(self, stevilka, polje):
-        '''Vrne RESEN_SUDOKU, NAPACEN_UGIB, ZAPOLNJENO_POLJE, PRAVILEN_UGIB'''
+        '''Vrne NAPACEN_UGIB, ZAPOLNJENO_POLJE, PRAVILEN_UGIB, NEVELJAVEN_VNOS,
+        RESEN_SUDOKU'''
         y, x = polje
+        if stevilka.isalpha() or y.isalpha() or x.isalpha():
+            return NEVELJAVEN_VNOS
+        y, x, stevilka = int(y) - 1, int(x) - 1, int(stevilka)
         if self.tabela[y][x]:
             return ZAPOLNJENO_POLJE
         elif self.resena_tabela[y][x] != stevilka:
@@ -276,6 +273,14 @@ class SudokuAlly:
             stanje = trenutna_mreza.resi_nakljucno_polje()
 
         self.mreze[ime] = (trenutna_mreza, stanje)
+        self.zapisi_mreze_v_datoteko()
+
+    def resi_vse(self, ime):
+        self.nalozi_mreze_iz_datoteke()
+        mreza = self.mreze[ime][0]
+        mreza.tabela = mreza.resena_tabela
+        self.mreze[ime] = (mreza, RESEN_SUDOKU)
+        self.zapisi_mreze_v_datoteko()
 
     def vnesi_stevilko(self, ime, stevilka, polje):
         self.nalozi_mreze_iz_datoteke()
@@ -293,7 +298,7 @@ class SudokuAlly:
         }
 
         with open(self.datoteka_s_stanjem, 'w', encoding='utf-8') as out_file:
-            json.dump(mreze1, out_file)
+            json.dump(mreze1, out_file, ensure_ascii=False)
 
     def nalozi_mreze_iz_datoteke(self):
         with open(self.datoteka_s_stanjem, 'r', encoding='utf-8') as in_file:
@@ -303,13 +308,3 @@ class SudokuAlly:
             ime: (Mreza(zacetna_tabela, tabela, resena_tabela), stanje)
             for ime, (zacetna_tabela, tabela, resena_tabela, stanje) in mreze_iz_diska.items()
         }
-
-
-# Pomoč pri razvijanju - ustvaritev objekta
-# sudokually = SudokuAlly()
-# sudokually.nalozi_mreze_iz_datoteke()
-# print('check0')
-# ime_nove_mreze1 = sudokually.nova_mreza('dvojkica', tabela_2)
-# print('check1')
-# ime_nove_mreze0 = sudokually.nova_mreza('enkica', tabela_1)
-# print('check2')
