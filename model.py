@@ -191,6 +191,8 @@ class Mreza:
     def resi(self, tabela):
         '''Z rekurzivnim klicem ("backtracking" algoritmom) reši tabelo
         in vrne True/False. tabela = (self.tabela / self.zacetna_tabela)'''
+        if not self.ustreznost_tabele_osnovno(tabela):
+            return False
         polje = self.najdi_prazno_polje(tabela)
         if polje is None:  # Našli smo rešitev
             return True
@@ -302,6 +304,11 @@ class SudokuAlly:
         trenutna_mreza, _ = self.mreze[ime]
         stanje = trenutna_mreza.vnesi_stevilko(stevilka, polje)
         self.mreze[ime] = (trenutna_mreza, stanje)
+        self.zapisi_mreze_v_datoteko()
+
+    def izbrisi_mrezo(self, ime):
+        self.nalozi_mreze_iz_datoteke()
+        del self.mreze[ime]
         self.zapisi_mreze_v_datoteko()
 
     def zapisi_mreze_v_datoteko(self):
