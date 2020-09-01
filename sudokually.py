@@ -48,10 +48,13 @@ def nova_mreza_post():
                 bottle.redirect('/nova_mreza/')
             tabela[vrsta][stolpec] = int(stevilka)
     ime = sudokually.nova_mreza(ime, tabela)
-    bottle.response.set_cookie(
-        IME_MREZE_COOKIE, ime, path='/', secret=COOKIE_SECRET
-        )
-    bottle.redirect('/poskus_namig/')
+    if ime == False:
+        bottle.redirect('/nova_mreza/')
+    else:
+        bottle.response.set_cookie(
+            IME_MREZE_COOKIE, ime, path='/', secret=COOKIE_SECRET
+            )
+        bottle.redirect('/poskus_namig/')
 
 @bottle.get('/poskus_namig/')
 def prikaz_poskusa():

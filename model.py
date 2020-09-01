@@ -129,14 +129,25 @@ class Mreza:
                     return (i, j)  # (vrstica, stolpec)
         return # None
 
-    def ustreznost_tabele(self):
+    def ustreznost_tabele_osnovno(self, tabela):
         '''Preveri, ali je tabela v podani mreži ustrezna (brez
         ponovljenih številk). Vrne True/False.'''
         for i in range(9):
             for j in range(9):
-                if self.tabela[i][j] and not self.ustrezen(self.tabela[i][j], (i, j), self.tabela):
+                if tabela[i][j] and not self.ustrezen(tabela[i][j], (i, j), tabela):
                     return False
         return True
+
+    def ustreznost_tabele_napredno(self):
+        '''Preveri, ali je začetna tabela v podani mreži rešljiva (ima najmanj
+        eno končno rešitev)'''
+        # Prejšnja funkcija preveri ustreznost tabele, glede na ponovitev
+        # števil, kar pa še ne pomeni, da je tabela rešljiva.
+        return all([
+            self.ustreznost_tabele_osnovno(self.zacetna_tabela),
+            self.ustreznost_tabele_osnovno(self.resena_tabela),
+            not self.najdi_prazno_polje(self.resena_tabela)
+        ])
 
     def ustrezen(self, kandidat, polje, tabela):
         '''Podamo tabelo, številko ki je preverjamo in koordinate.
@@ -257,11 +268,15 @@ class SudokuAlly:
         self.datoteka_s_stanjem = datoteka_s_stanjem
 
     def nova_mreza(self, ime, tabela):
-        '''Naredi novo mrežo. Vrne ime mreže.'''
+        '''Naredi novo mrežo. Vrne ime mreže ali False'''
         self.nalozi_mreze_iz_datoteke()
-        self.mreze[ime] = (Mreza(tabela), ZACETEK) # Naredi novo mrežo
-        self.zapisi_mreze_v_datoteko()
-        return ime
+        mreza = Mreza(tabela) # Naredi novo mrežo
+        if mreza.ustreznost_tabele_napredno():
+            self.mreze[ime] = (mreza, ZACETEK)
+            self.zapisi_mreze_v_datoteko()
+            return ime
+        else:
+            return False
 
     def resi_polje(self, ime, polje=None):
         self.nalozi_mreze_iz_datoteke()
