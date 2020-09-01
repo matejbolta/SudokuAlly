@@ -5,7 +5,6 @@
     table { border-collapse: collapse; font-family: Calibri, sans-serif; }
     colgroup, tbody { border: solid medium; }
     td { border: solid thin; height: 1.4em; width: 1.4em; text-align: center; padding: 0; }
-    button { background-color: #3cc0d5; border: none; color: white; padding: 15px 15px; text-align: center; text-decoration: none; display: inline-block; font-size: 12px; }
 </style>
 
 <nav class="panel">
@@ -45,14 +44,12 @@
                 % end
             </table>
             <br>
-            <button type="submit">Proceed</button>
+            <button type="submit">Ustvari mrežo</button>
             
+        </form>
+        <br>
+        <form action="/SudokuAlly/" method="GET">
+            <button type="submit">Zavrzi & Domov</button>
         </form>
     </div>
 </nav>
-
-<!--
-    Na nova_mreza z GET, potem pa na
-    'proceed gumb na /nova_mreza/' z POST, in
-    redirect na poskus (GET)
--->
