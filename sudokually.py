@@ -121,6 +121,12 @@ def obstojece_mreze_post(ime):
         )
     bottle.redirect('/poskus_namig/')
 
+# Statistika
+@bottle.get('/statistika/')
+def prikazi_statistiko():
+    statistike = model.statistika()
+    return bottle.template('statistika.tpl', statistike=statistike)
+
 # Slike
 @bottle.get('/img/<slika>')
 def serve_pictures(slika):
