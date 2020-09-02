@@ -5,7 +5,8 @@
     #statistika {
         font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
         border-collapse: collapse;
-        width: 100%;
+        width: 490px;
+        margin-left:15px
     }
     
     #statistika td, #statistika th {
@@ -21,9 +22,10 @@
         padding-top: 12px;
         padding-bottom: 12px;
         text-align: left;
-        background-color: #21effa;
+        background-color: #50d5e9;
         color: white;
     }
+    button { margin:0px 0px 0px 439px; }
 </style>
 
 <br><br>
@@ -102,5 +104,5 @@
 <br>
 
 <form action="/SudokuAlly/" method="get">
-    <button type="submit">Domov</button>
+    <button type="submit">DOMOV</button>
 </form>
