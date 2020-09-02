@@ -8,19 +8,19 @@
 <table>
   <tr>
     <td>
-      <form action="/nova_mreza/" method="get">
+      <form action="/nova_mreza/" method="GET">
         <button type="submit">Nova mreža</button>
       </form>
     </td>
     
     <td>
-      <form action="/obstojece_mreze/" method="get">
+      <form action="/obstojece_mreze/" method="GET">
         <button type="submit">Že obstoječa mreža</button>
       </form>
     </td>
     
     <td>
-      <form action="/statistika/" method="post">
+      <form action="/statistika/" method="GET">
         <button type="submit">Statistika</button>
       </form>
     </td>
