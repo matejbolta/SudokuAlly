@@ -253,16 +253,14 @@ class Mreza:
             else:
                 return PRAVILEN_UGIB
 
-    def polja_zacetne_tabele(self):
-        polja = []
-        for y in self.zacetna_tabela:
-            for x in self.zacetna_tabela[y]:
-                if self.zacetna_tabela[y][x]:
-                    polja.append((y, x))
-        return polja
+    def stevilo_zacetnih_polj(self, tabela=None):
+        if tabela is None:
+            tabela = self.zacetna_tabela
+        return sum([1 if tabela[y][x] else 0 for x in range(9) for y in range(9)])
+
 
 class SudokuAlly:
-    '''Skrbi za trenutno stanje VEČ mrež (imel bo več objektov tipa Mreza)'''
+    '''Skrbi za trenutno stanje večih mrež (imel bo več objektov tipa Mreza)'''
 
     def __init__(self, datoteka_s_stanjem=DATOTEKA_S_STANJEM):
         # Slovar, ki imenu priredi njegovo mrežo
@@ -330,3 +328,54 @@ class SudokuAlly:
             ime: (Mreza(zacetna_tabela, tabela, resena_tabela), stanje)
             for ime, (zacetna_tabela, tabela, resena_tabela, stanje) in mreze_iz_diska.items()
         }
+
+
+# Statistika
+def odstotek(stevec, imenovalec):
+    return int((stevec / imenovalec) * 100)
+
+def statistika(datoteka_s_stanjem=DATOTEKA_S_STANJEM):
+    '''
+    stevilo_mrez, 
+    stevilo_koncanih_mrez, 
+    odstotek_odprtih_mrez, 
+    odstotek_odprtih_mrez, 
+    najtezja_mreza, 
+    skupno_stevilo_uganjenih_polj, 
+    povprecje_polnih_polj, 
+    povprecje_polnih_zacetnih_polj, 
+    odstotek_resenih_mrez
+    '''
+    statistike = dict() # {}
+    sudokually = SudokuAlly()
+    sudokually.nalozi_mreze_iz_datoteke()
+    stevilo_mrez = len(sudokually.mreze)
+    statistike['stevilo_mrez'] = str(stevilo_mrez)
+    if stevilo_mrez:
+        stevilo_koncanih_mrez = sum([1 if not mreza.najdi_prazno_polje(mreza.tabela)
+        else 0 for mreza, _ in sudokually.mreze.values()])
+        statistike['stevilo_koncanih_mrez'] = str(stevilo_koncanih_mrez)
+
+        stevilo_odprtih_mrez = sum([1 if mreza.najdi_prazno_polje(mreza.tabela)
+        else 0 for mreza, _ in sudokually.mreze.values()])
+        statistike['odstotek_odprtih_mrez'] = f'{odstotek(stevilo_odprtih_mrez, stevilo_mrez)}%'
+
+        najtezja = (None, 82) # Več kot 81. Seznam ustreznih (mreža, št. polj).
+        for ime, (mreza, _) in sudokually.mreze.items():
+            if mreza.stevilo_zacetnih_polj() <= najtezja[1]:
+                najtezja = (ime, mreza.stevilo_zacetnih_polj())
+        statistike['najtezja_mreza'] = f'{najtezja[0]}: {najtezja[1]} polj'
+
+        vsa_zacetna_polja = sum([mreza.stevilo_zacetnih_polj() for (mreza, _)
+        in sudokually.mreze.values()])
+        vsa_polna_polja = sum([mreza.stevilo_zacetnih_polj(mreza.tabela)
+        for (mreza, _) in sudokually.mreze.values()])
+
+        statistike['skupno_stevilo_uganjenih_polj'] = str(vsa_polna_polja - vsa_zacetna_polja)
+        statistike['povprecje_polnih_polj'] = f'{odstotek(vsa_polna_polja, stevilo_mrez * 81)}%'
+        statistike['povprecje_polnih_zacetnih_polj'] = round(vsa_zacetna_polja / stevilo_mrez, 1)
+
+        resene_mreze = sum([1 if mreza.tabela == mreza.resena_tabela else 0 for (mreza, _) in sudokually.mreze.values()])
+        statistike['odstotek_resenih_mrez'] = f'{odstotek(resene_mreze, stevilo_mrez)}%'
+
+    return statistike
