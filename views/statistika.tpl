@@ -29,7 +29,7 @@
         text-align: center; 
         vertical-align: middle;
     }
-    button { margin:0px 0px 0px 439px; }
+    button { margin-left:439px; }
 </style>
 
 <br><br>
