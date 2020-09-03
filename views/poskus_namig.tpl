@@ -1,68 +1,82 @@
 % import model
 % rebase('base.tpl')
 
-<blockquote>
-    <h3>{{ime}}</h3>
-</blockquote>
-
-<blockquote>
+<nav style="margin-left:45px" class="panel">
+    <div class="panel-block">
+        <strong style="color:#46cadf;margin-left:128px">{{ime}}</strong><br><br>
+        
+        <table style="border-collapse: collapse; font-family: Calibri, sans-serif;">
+            % for _ in range(3):
+            <colgroup style="border:solid medium;"><col><col><col></colgroup>
+            % end
+            
+            % for trovrstje in range(3):
+            <tbody style="border:solid medium;">
+                
+                % for vrsta_v_trovrstju in range(3):
+                <tr>
+                    
+                    % for stolpec in range(9):
+                    <td style="padding:0;border:1px solid #ddd;text-align:center;vertical-align:middle;height:40px;width:40px">
+                        % vrsta = 3 * trovrstje + vrsta_v_trovrstju
+                        % if mreza.tabela[vrsta][stolpec]:
+                        {{mreza.tabela[vrsta][stolpec]}}
+                        % end
+                    </td>
+                    % end
+                    
+                </tr>
+                % end
+                
+            </tbody>
+            % end
+        </table>
+        
+    </div>
+</nav><br>
+<!-- 
+    Namesto vsega tega bi lahko preprosto rekli
     <pre>{{mreza}}</pre>
-</blockquote>
+    saj je tudi ta prikaz povsem pregleden.
+-->
 
-<blockquote>
-    <h3>{{stanje}}</h3>
-</blockquote>
-
-<br><br><br>
-
-<!-- Gumbi, po vrsti za:
-    Vnesi številko,
-    Reši to polje,
-    Reši naključno polje,
-    Reši celotno mrežo,
-    Shrani & Domov. -->
+<nav style="margin-left:50px" class="panel">
     <table>
         <tr>
-            <td>
-                <form action="/poskus_namig/vnesi_stevilko/" method="POST">
-                    Vrsta: <input size="1" type="text", name="vrsta", maxlength="1">
-                    Stolpec: <input size="1" type="text", name="stolpec", maxlength="1">
-                    Število: <input size="1" type="text", name="stevilo", maxlength="1">
-                    <button type="submit">Vnesi številko</button>
-                </form>
-            </td>
+            <form action="/poskus_namig/vnesi_stevilko/" method="POST">
+                <td><i>Vrsta:</i> <input style="height:30px;width:30px;box-sizing:border-box;" size="1" type="text", name="vrsta", maxlength="1"></td>
+                <td style="color:white">..</td>
+                <td><i>Stolpec:</i> <input style="height:30px;width:30px;box-sizing:border-box;" size="1" type="text", name="stolpec", maxlength="1"></td>
+                <td style="color:white">..</td>
+                <td><i>Število:</i> <input style="height:30px;width:30px;box-sizing:border-box;" size="1" type="text", name="stevilo", maxlength="1"></td>
+                <td style="color:white">aaaa</td>
+                <td><button type="submit">VNESI</button></td>
+            </form>
         </tr>
         <tr>
-            <td>
-                <form action="/poskus_namig/resi_polje/" method="POST">
-                    Vrsta: <input size="1" type="text", name="vrsta", maxlength="1">
-                    Stolpec: <input size="1" type="text", name="stolpec", maxlength="1">
-                    <button type="submit">Reši to polje</button>
-                </form>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <form action="/poskus_namig/resi_nakljucno/" method="POST">
-                    <button type="submit">Reši naključno polje</button>
-                </form>
-            </td>
-            <td>
-                <form action="/poskus_namig/resi_vse/" method="POST">
-                    <button type="submit">Reši celotno mrežo</button>
-                </form>
-            </td>
-            <td>
-                <form action="/SudokuAlly/" method="GET">
-                    <button type="submit">Shrani & Domov</button>
-                </form>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <form action="/poskus_namig/izbris_mreze/" method="POST">
-                    <button type="submit">Izbriši to mrežo</button>
-                </form>
-            </td>
+            <form action="/poskus_namig/resi_polje/" method="POST">
+                <td><i>Vrsta:</i> <input style="height:30px;width:30px;box-sizing:border-box;" size="1" type="text", name="vrsta", maxlength="1"></td>
+                <td></td>
+                <td><i>Stolpec:</i> <input style="height:30px;width:30px;box-sizing:border-box;" size="1" type="text", name="stolpec", maxlength="1"></td>
+                <td></td><td></td><td></td>
+                <td style="text-align: right;"> <button type="submit">REŠI</button> </td>
+            </form>
         </tr>
     </table>
+</nav>
+
+<form action="/poskus_namig/resi_nakljucno/" method="POST">
+    <button style="margin-top:5px;margin-left:154px;" type="submit">REŠI NAKLJUČNO POLJE</button>
+</form>
+
+<form action="/poskus_namig/resi_vse/" method="POST">
+    <button style="margin-top:3px;margin-left:159px;" type="submit">REŠI CELOTNO MREŽO</button>
+</form>
+
+<form action="/poskus_namig/izbris_mreze/" method="POST">
+    <button style="margin-top:3px;margin-left:181px;" type="submit">IZBRIŠI MREŽO</button>
+</form>
+
+<form action="/SudokuAlly/" method="GET">
+    <button style="margin-top:3px;margin-left:201px;" type="submit">DOMOV</button>
+</form>
