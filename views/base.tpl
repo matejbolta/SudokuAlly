@@ -4,6 +4,9 @@
 <head>
     <title>SudokuAlly</title>
     <meta charset="UTF-8" name="viewport", content="width-device-width, initial-scale=1.0">
+    <link rel="icon" 
+    type="image/png" 
+    href="https://www.pngrepo.com/png/45383/180/sudoku.png">
     <style>
         button { background-color: #50d5e9; border: none; color: white; padding: 12px 12px; text-align: center; text-decoration: none; display: inline-block; font-size: 11px; }
     </style>
@@ -17,7 +20,7 @@
             </pre>
         </b>
     </div>
-
+    
     <div class="container">
         {{!base}}
     </div>
