@@ -1,31 +1,26 @@
 % import model
 % rebase('base.tpl')
 
-<style>
-  button { margin:5px 12px 0px 30px; }
-</style>
 
-<blockquote>
-  <h4><i>SudokuAlly - vaš zaveznik, ko številke postanejo prezahtevne.</i></h4>
-</blockquote>
+<h4 style="margin-left:42px;"><i>SudokuAlly - vaš zaveznik, ko številke postanejo prezahtevne.</i></h4>
 
 <table>
   <tr>
     <td>
       <form action="/nova_mreza/" method="GET">
-        <button type="submit">DODAJ MREŽO</button>
+        <button style="margin-left:46px" type="submit">DODAJ MREŽO</button>
       </form>
     </td>
     
     <td>
       <form action="/obstojece_mreze/" method="GET">
-        <button type="submit">OBSTOJEČA MREŽA</button>
+        <button style="margin-left:27px" type="submit">OBSTOJEČA MREŽA</button>
       </form>
     </td>
     
     <td>
       <form action="/statistika/" method="GET">
-        <button type="submit">STATISTIKA</button>
+        <button style="margin-left:27px" type="submit">STATISTIKA</button>
       </form>
     </td>
   </tr>

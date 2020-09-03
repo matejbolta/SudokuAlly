@@ -12,6 +12,8 @@
     #statistika td, #statistika th {
         border: 1px solid #ddd;
         padding: 8px;
+        text-align: center; 
+        vertical-align: middle;
     }
     
     #statistika tr:nth-child(even){background-color: #f2f2f2;}
@@ -24,6 +26,8 @@
         text-align: left;
         background-color: #50d5e9;
         color: white;
+        text-align: center; 
+        vertical-align: middle;
     }
     button { margin:0px 0px 0px 439px; }
 </style>
@@ -89,14 +93,6 @@
         </td>
         <td>
             {{statistike.get('povprecje_polnih_zacetnih_polj', 'N/A')}}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <i>Delež rešenih mrež:</i>
-        </td>
-        <td>
-            {{statistike.get('odstotek_resenih_mrez', 'N/A')}}
         </td>
     </tr>
 </table>
