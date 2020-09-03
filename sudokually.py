@@ -11,6 +11,7 @@ import bottle, model, json, os
 
 # Konstante
 IME_MREZE_COOKIE = 'ime_mreze'
+VNOS_MREZE_COOKIE = 'vnos_mreze'
 COOKIE_SECRET = 'my very special - secret key and passphrase'
 
 # Če datoteka s stanjem še ne obstaja, jo naredimo.
@@ -33,7 +34,10 @@ def index():
 
 @bottle.get('/nova_mreza/')
 def nova_mreza_get():
-    return bottle.template('vnos_mreze.tpl')
+    opozorilo = bottle.request.get_cookie(
+        VNOS_MREZE_COOKIE, secret=COOKIE_SECRET
+        )
+    return bottle.template('vnos_mreze.tpl', opozorilo=opozorilo)
 
 @bottle.post('/nova_mreza/')
 def nova_mreza_post():
@@ -44,15 +48,24 @@ def nova_mreza_post():
             stevilka = bottle.request.forms[f'{vrsta}{stolpec}']
             if stevilka == '':
                 continue
-            elif len(stevilka) != 1 or stevilka.isalpha():
+            elif not stevilka.isdigit():
+                bottle.response.set_cookie(
+            VNOS_MREZE_COOKIE, 'int', path='/nova_mreza/', secret=COOKIE_SECRET
+            )
                 bottle.redirect('/nova_mreza/')
             tabela[vrsta][stolpec] = int(stevilka)
     if sudokually.nova_mreza(ime, tabela):
         bottle.response.set_cookie(
             IME_MREZE_COOKIE, ime, path='/', secret=COOKIE_SECRET
             )
+        bottle.response.set_cookie(
+            VNOS_MREZE_COOKIE, '', path='/nova_mreza/', secret=COOKIE_SECRET
+            )
         bottle.redirect('/poskus_namig/')
     else:
+        bottle.response.set_cookie(
+            VNOS_MREZE_COOKIE, 'unsolvable', path='/nova_mreza/', secret=COOKIE_SECRET
+            )
         bottle.redirect('/nova_mreza/')
 
 @bottle.get('/poskus_namig/')
@@ -115,11 +128,17 @@ def obstojece_mreze_get():
 
 @bottle.post('/obstojece_mreze/<ime>/')
 def obstojece_mreze_post(ime):
-    bottle.response.delete_cookie('IME_MREZE_COOKIE', path='/')
     bottle.response.set_cookie(
         IME_MREZE_COOKIE, ime, path='/', secret=COOKIE_SECRET
         )
     bottle.redirect('/poskus_namig/')
+
+@bottle.post('/brisanje_sledi/')
+def pobrisi_piskotke():
+    bottle.response.set_cookie(
+            VNOS_MREZE_COOKIE, '', path='/nova_mreza/', secret=COOKIE_SECRET
+            )
+    bottle.redirect('/SudokuAlly/')
 
 # Statistika
 @bottle.get('/statistika/')
