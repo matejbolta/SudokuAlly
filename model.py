@@ -309,6 +309,16 @@ class SudokuAlly:
         del self.mreze[ime]
         self.zapisi_mreze_v_datoteko()
 
+    def odprte_resene(self):
+        '''Vrne števili odprtih in rešenih mrež'''
+        odprti, reseni = 0, 0
+        for _, stanje in self.mreze.values():
+            if stanje == RESEN_SUDOKU:
+                reseni += 1
+            else:
+                odprti += 1
+        return (odprti, reseni)
+
     def zapisi_mreze_v_datoteko(self):
         # { ime : ( zacetna_tabela, tabela, resena_tabela, stanje ) }
 
