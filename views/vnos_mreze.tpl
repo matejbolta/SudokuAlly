@@ -4,18 +4,23 @@
 <style>
     table { border-collapse: collapse; font-family: Calibri, sans-serif; }
     colgroup, tbody { border: solid medium; }
-    td { border: solid thin; height: 1.4em; width: 1.4em; text-align: center; padding: 0; }
+    td { border: solid thin; padding: 0; }
 </style>
 
-<nav class="panel">
-    <p class="panel-heading">
-        <strong>Vnesi števila med vključno 1 in 9.</strong><br>
-        <i>Če števila ni, lahko vneseš 0, ali pa pustiš prazno polje.</i>
-    </p>
+<nav style="margin-left:45px" class="panel">
     <div class="panel-block">
-        <form action="/nova_mreza/" method="POST">
-            Ime tvoje mreže:
-            <input type="text", name="ime", autofocus><br><br>
+        <div class="contentcontainer med left" style="margin-left: 65px;">
+            <form action="/nova_mreza/" method="POST">
+                <i>Ime mreže:</i>
+                <input type="text", name="ime", autofocus><br><br>
+            </div>
+            % if opozorilo == 'int':
+            <strong style="margin-left:70px;color:#f19012;">Ne vnašaj črk ter drugih znakov!</strong><br><br>
+            % end
+            % if opozorilo == 'unsolvable':
+            <strong style="margin-left:43px;color:#f19012;">Prepričaj se, da je vnesena mreža rešljiva!</strong><br><br>
+            % end
+            <strong style="margin-left:70px">Vnesi števila med vključno 1 in 9.</strong><br><br>
             <table>
                 <!-- colgroup in tbody značke so prisotne zaradi odebeljenih črt v sudoku mreži -->
                 % for _ in range(3):
@@ -29,10 +34,10 @@
                     <tr>
                         
                         % for stolpec in range(9):
-                        <td>
+                        <td style="height:40px;width:40px">
                             
                             % vrsta = 3 * trovrstje + vrsta_v_trovrstju
-                            <input size="1" type="text", name="{{vrsta}}{{stolpec}}", maxlength="1">
+                            <input style="height:100%;width:100%;box-sizing:border-box;" type="text", name="{{vrsta}}{{stolpec}}", maxlength="1">
                             
                         </td>
                         % end
@@ -44,12 +49,16 @@
                 % end
             </table>
             <br>
-            <button type="submit">Ustvari mrežo</button>
-            
-        </form>
-        <br>
-        <form action="/SudokuAlly/" method="GET">
-            <button type="submit">Zavrzi & Domov</button>
-        </form>
+            <table>
+                <tr>
+                    <button style="margin-left:137px;" type="submit">DODAJ MREŽO</button>
+                </form>
+                
+                <form action="/brisanje_sledi/" method="POST">
+                    <button style="margin-left:18px;" type="submit">ZAVRZI & DOMOV</button>
+                </form>
+            </tr>
+        </table>
+        
     </div>
 </nav>
