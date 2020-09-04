@@ -1,9 +1,21 @@
 % import model
 % rebase('base.tpl')
-
+{{stanje}}<br>
 <nav style="margin-left:45px" class="panel">
     <div class="panel-block">
-        <strong style="color:#46cadf;margin-left:128px">{{ime}}</strong><br><br>
+        <strong style="color:#46cadf;margin-left:125px">{{ime}}</strong><br><br>
+
+        % if stanje == model.NAPACEN_UGIB:
+        <strong style="margin-left:68px;color:#f14612;">Število, ki ste ga vnesli, je napačno.</strong><br><br>
+        % elif stanje == model.ZAPOLNJENO_POLJE:
+        <strong style="margin-left:112px;color:#f19012;">Izberite prazno polje!</strong><br><br>
+        % elif stanje == model.PRAVILEN_UGIB:
+        <strong style="margin-left:103px;color:#26d60f;">Vnesli ste pravo število!</strong><br><br>
+        % elif stanje == model.NEVELJAVEN_VNOS:
+        <strong style="margin-left:53px;color:#f19012;">Vnašajte le števila med vključno 1 in 9!</strong><br><br>
+        % elif stanje == model.USPESNA_POMOC:
+        <strong style="margin-left:132px;color:#26d60f;">Uspešna pomoč!</strong><br><br>
+        % end
         
         <table style="border-collapse: collapse; font-family: Calibri, sans-serif;">
             % for _ in range(3):
@@ -40,6 +52,7 @@
     saj je tudi ta prikaz povsem pregleden.
 -->
 
+% if stanje != model.RESEN_SUDOKU:
 <nav style="margin-left:50px" class="panel">
     <table>
         <tr>
@@ -66,7 +79,7 @@
 </nav>
 
 <form action="/poskus_namig/resi_nakljucno/" method="POST">
-    <button style="margin-top:5px;margin-left:154px;" type="submit">REŠI NAKLJUČNO POLJE</button>
+    <button style="margin-top:16px;margin-left:154px;" type="submit">REŠI NAKLJUČNO POLJE</button>
 </form>
 
 <form action="/poskus_namig/resi_vse/" method="POST">
@@ -74,9 +87,10 @@
 </form>
 
 <form action="/poskus_namig/izbris_mreze/" method="POST">
-    <button style="margin-top:3px;margin-left:181px;" type="submit">IZBRIŠI MREŽO</button>
+    <button style="margin-top:3px;margin-left:182px;" type="submit">IZBRIŠI MREŽO</button>
 </form>
+% end
 
 <form action="/SudokuAlly/" method="GET">
-    <button style="margin-top:3px;margin-left:201px;" type="submit">DOMOV</button>
+    <button style="margin-top:3px;margin-left:202px;" type="submit">DOMOV</button>
 </form>
