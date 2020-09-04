@@ -221,25 +221,28 @@ class Mreza:
             while self.tabela[y][x]:
                 y, x = random.choice(range(9)), random.choice(range(9))
             self.tabela[y][x] = self.resena_tabela[y][x]
-            return USPESNA_POMOC
+            if self.najdi_prazno_polje(self.tabela):
+                return USPESNA_POMOC
         return RESEN_SUDOKU
 
     def resi_doloceno_polje(self, polje):
         '''Z ustrezno številko zapolni podano polje v tabeli'''
         y, x = polje
-        if y.isalpha() or x.isalpha():
+        if not y.isdigit() or not x.isdigit():
             return NEVELJAVEN_VNOS
         y, x = int(y) - 1, int(x) - 1
         if not self.tabela[y][x]:
             self.tabela[y][x] = self.resena_tabela[y][x]
-            return USPESNA_POMOC
+            if self.najdi_prazno_polje(self.tabela):
+                return USPESNA_POMOC
+            return RESEN_SUDOKU
         return ZAPOLNJENO_POLJE
 
     def vnesi_stevilko(self, stevilka, polje):
         '''Vrne NAPACEN_UGIB, ZAPOLNJENO_POLJE, PRAVILEN_UGIB, NEVELJAVEN_VNOS,
         RESEN_SUDOKU'''
         y, x = polje
-        if stevilka.isalpha() or y.isalpha() or x.isalpha():
+        if not stevilka.isdigit() or not y.isdigit() or not x.isdigit() or stevilka == '0':
             return NEVELJAVEN_VNOS
         y, x, stevilka = int(y) - 1, int(x) - 1, int(stevilka)
         if self.tabela[y][x]:
