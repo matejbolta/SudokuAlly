@@ -11,8 +11,8 @@ import bottle, model, json, os
 
 # Konstante
 IME_MREZE_COOKIE = 'ime_mreze'
-VNOS_MREZE_COOKIE = 'vnos_mreze'
-COOKIE_SECRET = 'my very special - secret key and passphrase'
+OPOZORILO_COOKIE = 'opozorilo'
+COOKIE_SECRET = 'potni list do mojega piškotka'
 
 # Če datoteka s stanjem še ne obstaja, jo naredimo.
 if not os.path.exists(model.DATOTEKA_S_STANJEM):
@@ -35,7 +35,7 @@ def index():
 @bottle.get('/nova_mreza/')
 def nova_mreza_get():
     opozorilo = bottle.request.get_cookie(
-        VNOS_MREZE_COOKIE, secret=COOKIE_SECRET
+        OPOZORILO_COOKIE, secret=COOKIE_SECRET
         )
     return bottle.template('vnos_mreze.tpl', opozorilo=opozorilo)
 
@@ -43,6 +43,11 @@ def nova_mreza_get():
 def nova_mreza_post():
     tabela = [[stevilo for stevilo in vrstica] for vrstica in model.PRAZNA_TABELA]
     ime = bottle.request.forms.getunicode('ime').upper()
+    if not ime:
+        bottle.response.set_cookie(
+            OPOZORILO_COOKIE, 'noname', path='/nova_mreza/', secret=COOKIE_SECRET
+            )
+        bottle.redirect('/nova_mreza/')
     for vrsta in range(9):
         for stolpec in range(9):
             stevilka = bottle.request.forms[f'{vrsta}{stolpec}']
@@ -50,7 +55,7 @@ def nova_mreza_post():
                 continue
             elif not stevilka.isdigit():
                 bottle.response.set_cookie(
-            VNOS_MREZE_COOKIE, 'int', path='/nova_mreza/', secret=COOKIE_SECRET
+            OPOZORILO_COOKIE, 'int', path='/nova_mreza/', secret=COOKIE_SECRET
             )
                 bottle.redirect('/nova_mreza/')
             tabela[vrsta][stolpec] = int(stevilka)
@@ -59,12 +64,12 @@ def nova_mreza_post():
             IME_MREZE_COOKIE, ime, path='/', secret=COOKIE_SECRET
             )
         bottle.response.set_cookie(
-            VNOS_MREZE_COOKIE, '', path='/nova_mreza/', secret=COOKIE_SECRET
+            OPOZORILO_COOKIE, '', path='/nova_mreza/', secret=COOKIE_SECRET
             )
         bottle.redirect('/poskus_namig/')
     else:
         bottle.response.set_cookie(
-            VNOS_MREZE_COOKIE, 'unsolvable', path='/nova_mreza/', secret=COOKIE_SECRET
+            OPOZORILO_COOKIE, 'unsolvable', path='/nova_mreza/', secret=COOKIE_SECRET
             )
         bottle.redirect('/nova_mreza/')
 
@@ -136,7 +141,7 @@ def obstojece_mreze_post(ime):
 @bottle.post('/brisanje_sledi/')
 def pobrisi_piskotke():
     bottle.response.set_cookie(
-            VNOS_MREZE_COOKIE, '', path='/nova_mreza/', secret=COOKIE_SECRET
+            OPOZORILO_COOKIE, '', path='/nova_mreza/', secret=COOKIE_SECRET
             )
     bottle.redirect('/SudokuAlly/')
 
