@@ -14,10 +14,11 @@
                 <i>Ime mreže:</i>
                 <input type="text", name="ime", autofocus><br><br>
             </div>
-            % if opozorilo == 'int':
+            % if opozorilo == 'noname':
+            <strong style="margin-left:31px;color:#f19012;">Ne pozabi vnesti prepoznavnega imena mreže!</strong><br><br>
+            % elif opozorilo == 'int':
             <strong style="margin-left:70px;color:#f19012;">Ne vnašaj črk ter drugih znakov!</strong><br><br>
-            % end
-            % if opozorilo == 'unsolvable':
+            % elif opozorilo == 'unsolvable':
             <strong style="margin-left:43px;color:#f19012;">Prepričaj se, da je vnesena mreža rešljiva!</strong><br><br>
             % end
             <strong style="margin-left:70px">Vnesi števila med vključno 1 in 9.</strong><br><br>

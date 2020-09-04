@@ -31,6 +31,7 @@
 <style>
     button { margin:0px 0px 0px 197px; }
     h4 {
+        color:#f19012;
         margin:0px 0px 0px 122px;
         padding: 0.5em 10px;
     }
@@ -60,7 +61,7 @@
             <tr>
                 <td>
                     <form action="/obstojece_mreze/{{ime}}/" method="POST">
-                        <button style="margin:auto;display:block;background-color: #10b2ca; border: none; color: white; padding: 6px 6px; text-align: center; text-decoration: none; font-size: 11px;" type="submit">{{ime}}</button>
+                        <button style="margin:auto;display:block;background-color: #1bb6ce; border: none; color: white; padding: 6px 6px; text-align: center; text-decoration: none; font-size: 11px;" type="submit">{{ime}}</button>
                     </form>
                 </td>
             </tr>
@@ -81,7 +82,7 @@
             <tr>
                 <td>
                     <form action="/obstojece_mreze/{{ime}}/" method="POST">
-                        <button style="margin:auto;display:block;background-color: #10b2ca; border: none; color: white; padding: 6px 6px; text-align: center; text-decoration: none; font-size: 11px;" type="submit">{{ime}}</button>
+                        <button style="margin:auto;display:block;background-color: #1bb6ce; border: none; color: white; padding: 6px 6px; text-align: center; text-decoration: none; font-size: 11px;" type="submit">{{ime}}</button>
                     </form>
                 </td>
             </tr>
