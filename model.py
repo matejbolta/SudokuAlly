@@ -30,72 +30,28 @@ USPESNA_POMOC = 'pomoc_je_uspesna'
 RESEN_SUDOKU = 'sudoku_je_resen'
 PRAZNA_TABELA = [[0 for _ in range(9)] for _ in range(9)]
 
-# Primeri sudoku mrež (tabel)
-tabela_1 = [
-    [7, 8, 0, 4, 0, 0, 1, 2, 0],
-    [6, 0, 0, 0, 7, 5, 0, 0, 9],
-    [0, 0, 0, 6, 0, 1, 0, 7, 8],
-    [0, 0, 7, 0, 4, 0, 2, 6, 0],
-    [0, 0, 1, 0, 5, 0, 9, 3, 0],
-    [9, 0, 4, 0, 6, 0, 0, 0, 5],
-    [0, 7, 0, 3, 0, 0, 0, 1, 2],
-    [1, 2, 0, 0, 0, 7, 4, 0, 0],
-    [0, 4, 9, 2, 0, 6, 0, 0, 7],
-]
-tabela_2 = [
-    [0, 0, 0, 0, 0, 0, 7, 0, 0],
-    [0, 0, 8, 6, 5, 9, 0, 0, 1],
-    [0, 1, 0, 0, 0, 0, 0, 2, 0],
-    [1, 0, 0, 9, 0, 6, 0, 4, 0],
-    [0, 0, 7, 0, 8, 0, 2, 0, 0],
-    [0, 9, 0, 2, 0, 1, 0, 0, 6],
-    [0, 5, 0, 0, 0, 0, 0, 6, 0],
-    [6, 0, 0, 4, 1, 7, 3, 0, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 0],
-]
-tabela_ctcapp = [
-    [0, 1, 0, 0, 0, 0, 0, 2, 0],
-    [3, 0, 0, 0, 0, 0, 0, 0, 7],
-    [0, 0, 4, 5, 0, 2, 1, 0, 0],
-    [0, 0, 6, 4, 0, 5, 2, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 3, 0, 6, 5, 0, 0],
-    [0, 0, 5, 6, 0, 4, 3, 0, 0],
-    [6, 0, 0, 0, 0, 0, 0, 0, 2],
-    [0, 8, 0, 0, 0, 0, 0, 9, 0],
-]
-tabela_ctcyt = [
-    [5, 0, 0, 2, 0, 0, 0, 4, 0],
-    [0, 0, 0, 6, 0, 3, 0, 0, 0],
-    [0, 3, 0, 0, 0, 9, 0, 0, 7],
-    [0, 0, 3, 0, 0, 7, 0, 0, 0],
-    [0, 0, 7, 0, 0, 8, 0, 0, 0],
-    [6, 0, 0, 0, 0, 0, 0, 2, 0],
-    [0, 8, 0, 0, 0, 0, 0, 0, 3],
-    [0, 0, 0, 4, 0, 0, 6, 0, 0],
-    [0, 0, 0, 1, 0, 0, 5, 0, 0]
-]
-
-# Navajeni smo, da koordinate vedno podajamo v obliki (x, y). Vendar pa
-# se pri reševanju sudokuja uporablja standardna notacija, ki je oblike
-# R1C1, kjer je R row (vrstica), C column (stolpec), pripadajoči
-# številki pa zaporedna vrstica oz. stolpec. Ta notacija je seveda
-# oblike (y, x). Primer: R3C6 pomeni polje v tretji vrstici in v šestem
-# stolpcu. Naše oznake pa bodo med (0, 0) in (8, 8).
+# Navajeni smo, da koordinate vedno podajamo v obliki (x, y). Vendar 
+# pa se pri reševanju sudokuja uporablja standardna notacija, ki je 
+# oblike R1C1, kjer je R row (vrstica), C column (stolpec), 
+# pripadajoči številki pa zaporedna vrstica oz. stolpec. Ta notacija 
+# je seveda oblike (y, x). Primer: R3C6 pomeni polje v tretji vrstici 
+# in v šestem stolpcu. Naše oznake pa bodo med (0, 0) in (8, 8).
 
 class Mreza:
-    '''Predstavlja eno sudoku mrežo. Vsebuje začetno, trenutno in
+    '''Predstavlja eno sudoku mrežo. Vsebuje začetno, trenutno in 
     rešeno tabelo'''
     def __init__(self, zacetna_tabela, tabela=None, resena_tabela=None):
         self.zacetna_tabela = zacetna_tabela
         if tabela:
             self.tabela = tabela
         else:
-            self.tabela = [[stevilo for stevilo in vrstica] for vrstica in zacetna_tabela]
+            self.tabela = [[stevilo for stevilo in vrstica] for 
+            vrstica in zacetna_tabela]
         if resena_tabela:
             self.resena_tabela = resena_tabela
         else:
-            self.resena_tabela = [[stevilo for stevilo in vrstica] for vrstica in zacetna_tabela]
+            self.resena_tabela = [[stevilo for stevilo in vrstica] 
+            for vrstica in zacetna_tabela]
             self.resi(self.resena_tabela)
 
     def __repr__(self):
@@ -120,8 +76,8 @@ class Mreza:
         return izpis
 
     def najdi_prazno_polje(self, tabela):
-        '''V dani tabeli poišče prazno polje, in vrne njegove koordinate
-        v obliki (y, x). Če praznih polj ni, vrne None.
+        '''V dani tabeli poišče prazno polje, in vrne njegove 
+        koordinate v obliki (y, x). Če praznih polj ni, vrne None. 
         tabela = (self.tabela / self.zacetna_tabela)'''
         for i in range(len(tabela)):
             for j in range(len(tabela[0])):
@@ -134,15 +90,16 @@ class Mreza:
         ponovljenih številk). Vrne True/False.'''
         for i in range(9):
             for j in range(9):
-                if tabela[i][j] and not self.ustrezen(tabela[i][j], (i, j), tabela):
+                if tabela[i][j] and not self.ustrezen(tabela[i][j], 
+                (i, j), tabela):
                     return False
         return True
 
     def ustreznost_tabele_napredno(self):
-        '''Preveri, ali je začetna tabela v podani mreži rešljiva (ima najmanj
-        eno končno rešitev)'''
-        # Prejšnja funkcija preveri ustreznost tabele, glede na ponovitev
-        # števil, kar pa še ne pomeni, da je tabela rešljiva.
+        '''Preveri, ali je začetna tabela v podani mreži rešljiva (ima 
+        najmanj eno končno rešitev)'''
+        # Prejšnja funkcija preveri ustreznost tabele, glede na 
+        # ponovitev števil, kar pa še ne pomeni, da je tabela rešljiva.
         return all([
             self.ustreznost_tabele_osnovno(self.zacetna_tabela),
             self.ustreznost_tabele_osnovno(self.resena_tabela),
@@ -176,21 +133,21 @@ class Mreza:
         return True
 
     def preveri_boks(self, kandidat, polje, tabela):
-        '''Preveri, ali kandidat ustreza polju glede na boks v tabeli.
+        '''Preveri, ali kandidat ustreza polju glede na boks v tabeli. 
         tabela = (self.tabela / self.zacetna_tabela)'''
         boks_x = polje[1] // 3  # Vrednost 0 1 ali 2
         boks_y = polje[0] // 3  # Vrednost 0 1 ali 2
 
-        for i in range(boks_x * 3, boks_x * 3 + 3): # Pravi trije indeksi na abscisi
-            for j in range(boks_y * 3, boks_y * 3 + 3): # Pravi trije indeksi na ordinati
+        for i in range(boks_x * 3, boks_x * 3 + 3):
+            for j in range(boks_y * 3, boks_y * 3 + 3):
                 if tabela[j][i] == kandidat and (j, i) != polje:
                     return False
         # Če pridemo do konca je kandidat ustrezen
         return True
 
     def resi(self, tabela, stikalo=True):
-        '''Z rekurzivnim klicem ("backtracking" algoritmom) reši tabelo
-        in vrne True/False. tabela = (self.tabela / self.zacetna_tabela)'''
+        '''Z rekurzivnim klicem ("backtracking" algoritmom) reši 
+        tabelo in vrne True/False.'''
         if stikalo and not self.ustreznost_tabele_osnovno(tabela):
             return False # Preveri le v ničtem rekurzivnem klicu
         polje = self.najdi_prazno_polje(tabela)
@@ -201,21 +158,23 @@ class Mreza:
 
         for i in range(1, 10): # i je kandidat
             if self.ustrezen(i, polje, tabela):
-                # Kandidat (i) ustreza trenutni tabeli, ne pa še nujno končni reštvi
+                # Kandidat (i) ustreza trenutni tabeli, ne pa še nujno 
+                # končni reštvi
                 tabela[vrstica][stolpec] = i
 
                 # Poskusimo rešiti novo tabelo (rekurzivni klic)
                 if self.resi(tabela, False):
                     return True
 
-                # Če ne pridemo do konca, je številka neustrezna, ponastavimo
-                # polje poskusimo z naslednjim kandidatom.
+                # Če ne pridemo do konca, je številka neustrezna, 
+                # ponastavimo polje poskusimo z naslednjim kandidatom.
                 tabela[vrstica][stolpec] = 0
 
         return False # Nismo našli rešitve (tabela je nerešljiva)
 
     def resi_nakljucno_polje(self):
-        '''Izbere nakljucno prazno polje v tabeli in ga zapolni z ustrezno številko.'''
+        '''Izbere nakljucno prazno polje v tabeli in ga zapolni z 
+        ustrezno številko.'''
         if self.najdi_prazno_polje(self.tabela):
             y, x = random.choice(range(9)), random.choice(range(9))
             while self.tabela[y][x]:
@@ -239,10 +198,11 @@ class Mreza:
         return ZAPOLNJENO_POLJE
 
     def vnesi_stevilko(self, stevilka, polje):
-        '''Vrne NAPACEN_UGIB, ZAPOLNJENO_POLJE, PRAVILEN_UGIB, NEVELJAVEN_VNOS,
-        RESEN_SUDOKU'''
+        '''Vrne NAPACEN_UGIB, ZAPOLNJENO_POLJE, PRAVILEN_UGIB, 
+        NEVELJAVEN_VNOS, RESEN_SUDOKU'''
         y, x = polje
-        if not stevilka.isdigit() or not y.isdigit() or not x.isdigit() or stevilka == '0':
+        if not stevilka.isdigit() or not y.isdigit() or not x.isdigit() or \
+        stevilka == '0':
             return NEVELJAVEN_VNOS
         y, x, stevilka = int(y) - 1, int(x) - 1, int(stevilka)
         if self.tabela[y][x]:
@@ -259,11 +219,13 @@ class Mreza:
     def stevilo_zacetnih_polj(self, tabela=None):
         if tabela is None:
             tabela = self.zacetna_tabela
-        return sum([1 if tabela[y][x] else 0 for x in range(9) for y in range(9)])
+        return sum([1 if tabela[y][x] else 0 for x in range(9) for y in
+        range(9)])
 
 
 class SudokuAlly:
-    '''Skrbi za trenutno stanje večih mrež (imel bo več objektov tipa Mreza)'''
+    '''Skrbi za trenutno stanje večih mrež (imel bo več objektov tipa 
+    Mreza)'''
 
     def __init__(self, datoteka_s_stanjem=DATOTEKA_S_STANJEM):
         # Slovar, ki imenu priredi njegovo mrežo
@@ -326,7 +288,8 @@ class SudokuAlly:
         # { ime : ( zacetna_tabela, tabela, resena_tabela, stanje ) }
 
         mreze1 = {
-            ime : (mreza.zacetna_tabela, mreza.tabela, mreza.resena_tabela, stanje)
+            ime : (mreza.zacetna_tabela, mreza.tabela,
+            mreza.resena_tabela, stanje)
             for ime, (mreza, stanje) in self.mreze.items()
         }
 
@@ -339,7 +302,8 @@ class SudokuAlly:
 
         self.mreze = {
             ime: (Mreza(zacetna_tabela, tabela, resena_tabela), stanje)
-            for ime, (zacetna_tabela, tabela, resena_tabela, stanje) in mreze_iz_diska.items()
+            for ime, (zacetna_tabela, tabela, resena_tabela, stanje) in
+            mreze_iz_diska.items()
         }
 
 
@@ -365,15 +329,18 @@ def statistika(datoteka_s_stanjem=DATOTEKA_S_STANJEM):
     stevilo_mrez = len(sudokually.mreze)
     statistike['stevilo_mrez'] = str(stevilo_mrez)
     if stevilo_mrez:
-        stevilo_koncanih_mrez = sum([1 if not mreza.najdi_prazno_polje(mreza.tabela)
+        stevilo_koncanih_mrez = sum([1 if not
+        mreza.najdi_prazno_polje(mreza.tabela)
         else 0 for mreza, _ in sudokually.mreze.values()])
         statistike['stevilo_koncanih_mrez'] = str(stevilo_koncanih_mrez)
 
-        stevilo_odprtih_mrez = sum([1 if mreza.najdi_prazno_polje(mreza.tabela)
+        stevilo_odprtih_mrez = sum([1 if
+        mreza.najdi_prazno_polje(mreza.tabela)
         else 0 for mreza, _ in sudokually.mreze.values()])
-        statistike['odstotek_odprtih_mrez'] = f'{odstotek(stevilo_odprtih_mrez, stevilo_mrez)}%'
+        statistike['odstotek_odprtih_mrez'] = \
+        f'{odstotek(stevilo_odprtih_mrez, stevilo_mrez)}%'
 
-        najtezja = (None, 82) # Več kot 81. Seznam ustreznih (mreža, št. polj).
+        najtezja = (None, 82) # Več kot 81
         for ime, (mreza, _) in sudokually.mreze.items():
             if mreza.stevilo_zacetnih_polj() <= najtezja[1]:
                 najtezja = (ime, mreza.stevilo_zacetnih_polj())
@@ -384,11 +351,16 @@ def statistika(datoteka_s_stanjem=DATOTEKA_S_STANJEM):
         vsa_polna_polja = sum([mreza.stevilo_zacetnih_polj(mreza.tabela)
         for (mreza, _) in sudokually.mreze.values()])
 
-        statistike['skupno_stevilo_uganjenih_polj'] = str(vsa_polna_polja - vsa_zacetna_polja)
-        statistike['povprecje_polnih_polj'] = f'{odstotek(vsa_polna_polja, stevilo_mrez * 81)}%'
-        statistike['povprecje_polnih_zacetnih_polj'] = round(vsa_zacetna_polja / stevilo_mrez, 1)
+        statistike['skupno_stevilo_uganjenih_polj'] = str(vsa_polna_polja
+        - vsa_zacetna_polja)
+        statistike['povprecje_polnih_polj'] = \
+        f'{odstotek(vsa_polna_polja, stevilo_mrez * 81)}%'
+        statistike['povprecje_polnih_zacetnih_polj'] = round(vsa_zacetna_polja
+        / stevilo_mrez, 1)
 
-        resene_mreze = sum([1 if mreza.tabela == mreza.resena_tabela else 0 for (mreza, _) in sudokually.mreze.values()])
-        statistike['odstotek_resenih_mrez'] = f'{odstotek(resene_mreze, stevilo_mrez)}%'
+        resene_mreze = sum([1 if mreza.tabela == mreza.resena_tabela else 0
+        for (mreza, _) in sudokually.mreze.values()])
+        statistike['odstotek_resenih_mrez'] = \
+        f'{odstotek(resene_mreze, stevilo_mrez)}%'
 
     return statistike

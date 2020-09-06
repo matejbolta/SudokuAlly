@@ -7,7 +7,16 @@
 #                                               __/ |
 #                                              |___/ 
 
-import bottle, model, json, os
+# Uporabljene slike so iz naslednjih naslovov:
+# Favicon: https://www.pngrepo.com/png/45383/180/sudoku.png
+# Gif: https://giphy.com/gifs/aarp-social-l41Yy6jvn3BXYDRu0
+# Slika v readme.md datoteki: 
+# https://qph.fs.quoracdn.net/main-qimg-bd9c2c0ab60b01af87f135939d847684.webp
+
+import bottle
+import model
+import json
+import os
 
 # Konstante
 IME_MREZE_COOKIE = 'ime_mreze'
@@ -41,11 +50,13 @@ def nova_mreza_get():
 
 @bottle.post('/nova_mreza/')
 def nova_mreza_post():
-    tabela = [[stevilo for stevilo in vrstica] for vrstica in model.PRAZNA_TABELA]
+    tabela = [[stevilo for stevilo in vrstica] for vrstica in 
+    model.PRAZNA_TABELA]
     ime = bottle.request.forms.getunicode('ime').upper()
     if not ime:
         bottle.response.set_cookie(
-            OPOZORILO_COOKIE, 'noname', path='/nova_mreza/', secret=COOKIE_SECRET
+            OPOZORILO_COOKIE, 'noname', path='/nova_mreza/', 
+            secret=COOKIE_SECRET
             )
         bottle.redirect('/nova_mreza/')
     for vrsta in range(9):
@@ -55,7 +66,8 @@ def nova_mreza_post():
                 continue
             elif not stevilka.isdigit():
                 bottle.response.set_cookie(
-            OPOZORILO_COOKIE, 'int', path='/nova_mreza/', secret=COOKIE_SECRET
+            OPOZORILO_COOKIE, 'int', path='/nova_mreza/', 
+            secret=COOKIE_SECRET
             )
                 bottle.redirect('/nova_mreza/')
             tabela[vrsta][stolpec] = int(stevilka)
@@ -64,12 +76,14 @@ def nova_mreza_post():
             IME_MREZE_COOKIE, ime, path='/', secret=COOKIE_SECRET
             )
         bottle.response.set_cookie(
-            OPOZORILO_COOKIE, '', path='/nova_mreza/', secret=COOKIE_SECRET
+            OPOZORILO_COOKIE, '', path='/nova_mreza/', 
+            secret=COOKIE_SECRET
             )
         bottle.redirect('/poskus_namig/')
     else:
         bottle.response.set_cookie(
-            OPOZORILO_COOKIE, 'unsolvable', path='/nova_mreza/', secret=COOKIE_SECRET
+            OPOZORILO_COOKIE, 'unsolvable', path='/nova_mreza/', 
+            secret=COOKIE_SECRET
             )
         bottle.redirect('/nova_mreza/')
 
@@ -129,7 +143,8 @@ def izbrisi():
 
 @bottle.get('/obstojece_mreze/')
 def obstojece_mreze_get():
-    return bottle.template('obstojece_mreze.tpl', sudokually=sudokually)
+    return bottle.template('obstojece_mreze.tpl', 
+    sudokually=sudokually)
 
 @bottle.post('/obstojece_mreze/<ime>/')
 def obstojece_mreze_post(ime):
@@ -141,7 +156,8 @@ def obstojece_mreze_post(ime):
 @bottle.post('/brisanje_sledi/')
 def pobrisi_piskotke():
     bottle.response.set_cookie(
-            OPOZORILO_COOKIE, '', path='/nova_mreza/', secret=COOKIE_SECRET
+            OPOZORILO_COOKIE, '', path='/nova_mreza/', 
+            secret=COOKIE_SECRET
             )
     bottle.redirect('/SudokuAlly/')
 
