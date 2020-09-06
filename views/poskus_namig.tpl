@@ -1,6 +1,6 @@
 % import model
 % rebase('base.tpl')
-{{stanje}}<br>
+
 <nav style="margin-left:45px" class="panel">
     <div class="panel-block">
         <strong style="color:#46cadf;margin-left:125px">{{ime}}</strong><br><br>
@@ -85,11 +85,11 @@
 <form action="/poskus_namig/resi_vse/" method="POST">
     <button style="margin-top:3px;margin-left:159px;" type="submit">REŠI CELOTNO MREŽO</button>
 </form>
+% end
 
 <form action="/poskus_namig/izbris_mreze/" method="POST">
     <button style="margin-top:3px;margin-left:182px;" type="submit">IZBRIŠI MREŽO</button>
 </form>
-% end
 
 <form action="/SudokuAlly/" method="GET">
     <button style="margin-top:3px;margin-left:202px;" type="submit">DOMOV</button>
