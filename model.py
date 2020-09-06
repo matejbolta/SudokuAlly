@@ -21,6 +21,9 @@ LOGOTIP = r'''
                                               |___/ 
 '''
 DATOTEKA_S_STANJEM = 'stanje.json'
+# Pomoč za ocenjevalca: prednastavljeno stanje
+# je shranjeno v spodnji datoteki.
+# DATOTEKA_S_STANJEM = 'stanje_prednastavljeno.json'
 ZACETEK = 'zacetno_stanje'
 NAPACEN_UGIB = 'ugib_je_napacen'
 ZAPOLNJENO_POLJE = 'polje_je_zapolnjeno'
