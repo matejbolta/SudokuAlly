@@ -7,22 +7,13 @@
 #                                               __/ |
 #                                              |___/ 
 
-import random, json
+import random
+import json
 
 # Konstante
-LOGOTIP = r'''
- _____           _       _           ___  _ _       
-/  ___|         | |     | |         / _ \| | |      
-\ `--. _   _  __| | ___ | | ___   _/ /_\ \ | |_   _ 
- `--. \ | | |/ _` |/ _ \| |/ / | | |  _  | | | | | |
-/\__/ / |_| | (_| | (_) |   <| |_| | | | | | | |_| |
-\____/ \__,_|\__,_|\___/|_|\_\\__,_\_| |_/_|_|\__, |
-                                               __/ |
-                                              |___/ 
-'''
 DATOTEKA_S_STANJEM = 'stanje.json'
-# Pomoč za ocenjevalca: prednastavljeno stanje
-# je shranjeno v spodnji datoteki.
+# Pomoč za ocenjevalca: prednastavljeno
+# stanje, shranjeno v spodnji datoteki:
 # DATOTEKA_S_STANJEM = 'stanje_prednastavljeno.json'
 ZACETEK = 'zacetno_stanje'
 NAPACEN_UGIB = 'ugib_je_napacen'
